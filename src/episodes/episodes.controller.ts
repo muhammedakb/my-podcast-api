@@ -8,12 +8,14 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { ConfigService } from '../config/config.service';
 import { IsPositivePipe } from '../pipes/is-positive/is-positive.pipe';
+import { ApiKeyGuard } from '../guards/api-key/api-key.guard';
 
 @Controller('episodes')
 export class EpisodesController {
@@ -49,6 +51,7 @@ export class EpisodesController {
     return episode;
   }
 
+  @UseGuards(ApiKeyGuard)
   @Post()
   create(@Body(ValidationPipe) input: CreateEpisodeDto) {
     console.log('input', input);
